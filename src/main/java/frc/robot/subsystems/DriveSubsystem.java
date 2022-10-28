@@ -6,9 +6,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import com.revrobotics.RelativeEncoder;
+// import com.revrobotics.SparkMaxPIDController;
 import frc.robot.RobotLifecycleCallbacks;
 
 
@@ -20,10 +21,10 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
   public static final double ENCODER_TICKS_PER_ROTATION = 2048;
 
-  private final TalonFX leftLeadMotor = new TalonFX(IDs.DRIVE_LEFT_LEAD_DEVICE);
-  private final TalonFX rightLeadMotor = new TalonFX(IDs.DRIVE_RIGHT_LEAD_DEVICE);
-  private final TalonFX leftFollowMotor = new TalonFX(IDs.DRIVE_LEFT_FOLLOW_DEVICE);
-  private final TalonFX rightFollowMotor = new TalonFX(IDs.DRIVE_RIGHT_FOLLOW_DEVICE);
+  private final CANSparkMax leftLeadMotor = new CANSparkMax(IDs.DRIVE_LEFT_LEAD_DEVICE,MotorType.kBrushless);
+  private final CANSparkMax rightLeadMotor = new CANSparkMax(IDs.DRIVE_RIGHT_LEAD_DEVICE,MotorType.kBrushless);
+  private final CANSparkMax leftFollowMotor = new CANSparkMax(IDs.DRIVE_LEFT_FOLLOW_DEVICE,MotorType.kBrushless);
+  private final CANSparkMax rightFollowMotor = new CANSparkMax(IDs.DRIVE_RIGHT_FOLLOW_DEVICE,MotorType.kBrushless);
 
   public DriveSubsystem() {
     leftFollowMotor.follow(leftLeadMotor);
@@ -39,38 +40,36 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   }
 
   public void arcadeDrive(double forward, double rotate) {
-    leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward + rotate);
-    rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
+    leftLeadMotor.set(forward + rotate);
+    rightLeadMotor.set(forward - rotate);
   }
 
   // differentialDrive requires constant updates, so we are manually setting the
   // motor speeds to test autonomous
-  public void autoDrive(double forward, double rotate) { // TODO: Investigate why arcadeDrive isn't working, but
-                                                         // autoDrive is.
-    leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward + rotate);
-    rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
+  public void autoDrive(double forward, double rotate) { 
+    leftLeadMotor.set(forward + rotate);
+    rightLeadMotor.set(forward - rotate);
   }
 
-  // documentation at CTRE Pheonix TalonFX documentation
   public void setOpenLoopRamp(double secondsFromNeutralToFull) {
-    leftLeadMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
-    rightLeadMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
-    leftFollowMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
-    rightFollowMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
+    leftLeadMotor.setOpenLoopRampRate(secondsFromNeutralToFull);
+    rightLeadMotor.setOpenLoopRampRate(secondsFromNeutralToFull);
+    leftFollowMotor.setOpenLoopRampRate(secondsFromNeutralToFull);
+    rightFollowMotor.setOpenLoopRampRate(secondsFromNeutralToFull);
   }
 
   // Get the current position of the left encoder.
   // Currently used to get the left encoder for driving by distance, but may be
   // changed to include right
   public double getLeftEncoderPosition() {
-    return leftLeadMotor.getSelectedSensorPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
+    return leftLeadMotor.getEncoder().getPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
   }
 
   // Get the current position of the right encoder.
   // Currently used to get the left encoder for driving by distance, but may be
   // changed to include right
   public double getRightEncoderPosition() {
-    return rightLeadMotor.getSelectedSensorPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
+    return rightLeadMotor.getEncoder().getPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
   }
 
   // Get the average position of left and right encoders.
@@ -79,8 +78,8 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   }
 
   public void resetEncoders() {
-    leftLeadMotor.setSelectedSensorPosition(0);
-    rightLeadMotor.setSelectedSensorPosition(0);
+    leftLeadMotor.getEncoder().setPosition(0);
+    rightLeadMotor.getEncoder().setPosition(0);
   }
 
   @Override
@@ -102,6 +101,5 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
   @Override
   public void disabledInit() {
-    // TODO Auto-generated method stub
   }
 }
