@@ -12,7 +12,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // import com.revrobotics.SparkMaxPIDController;
 import frc.robot.RobotLifecycleCallbacks;
 
-
 import frc.robot.IDs;
 
 public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
@@ -21,10 +20,10 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
   public static final double ENCODER_TICKS_PER_ROTATION = 2048;
 
-  private final CANSparkMax leftLeadMotor = new CANSparkMax(IDs.DRIVE_LEFT_LEAD_DEVICE,MotorType.kBrushless);
-  private final CANSparkMax rightLeadMotor = new CANSparkMax(IDs.DRIVE_RIGHT_LEAD_DEVICE,MotorType.kBrushless);
-  private final CANSparkMax leftFollowMotor = new CANSparkMax(IDs.DRIVE_LEFT_FOLLOW_DEVICE,MotorType.kBrushless);
-  private final CANSparkMax rightFollowMotor = new CANSparkMax(IDs.DRIVE_RIGHT_FOLLOW_DEVICE,MotorType.kBrushless);
+  private final CANSparkMax leftLeadMotor = new CANSparkMax(IDs.DRIVE_LEFT_LEAD_DEVICE, MotorType.kBrushless);
+  private final CANSparkMax rightLeadMotor = new CANSparkMax(IDs.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
+  private final CANSparkMax leftFollowMotor = new CANSparkMax(IDs.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);
+  private final CANSparkMax rightFollowMotor = new CANSparkMax(IDs.DRIVE_RIGHT_FOLLOW_DEVICE, MotorType.kBrushless);
 
   public DriveSubsystem() {
     leftFollowMotor.follow(leftLeadMotor);
@@ -46,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
   // differentialDrive requires constant updates, so we are manually setting the
   // motor speeds to test autonomous
-  public void autoDrive(double forward, double rotate) { 
+  public void autoDrive(double forward, double rotate) {
     leftLeadMotor.set(forward + rotate);
     rightLeadMotor.set(forward - rotate);
   }
