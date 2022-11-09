@@ -11,4 +11,9 @@ public final class IDs {
     public static final int DRIVE_RIGHT_FOLLOW_DEVICE = 4;
 
 
+
+    //Intake
+    public static final int INTAKE_LEAD_DEVICE = 5;
+
+
 }
