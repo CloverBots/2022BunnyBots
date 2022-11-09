@@ -11,9 +11,13 @@ public final class IDs {
     public static final int DRIVE_RIGHT_LEAD_DEVICE = 3;
     public static final int DRIVE_RIGHT_FOLLOW_DEVICE = 4;
 
+  //Intake
+    public static final int INTAKE_LEAD_DEVICE = 5;
+    
     // Lift
     public static final int LIFT_UPPER_SWITCH = 6;
     public static final int LIFT_LOWER_SWITCH = 7;
     public static final int LIFT_WINCH_DEVICE0 = 8;
     public static final int LIFT_WINCH_DEVICE1 = 9;
+    
 }

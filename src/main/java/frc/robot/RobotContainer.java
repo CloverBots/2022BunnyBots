@@ -7,10 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.LiftCommand;
 import frc.robot.subsystems.LiftSubsystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,6 +35,8 @@ public class RobotContainer {
   private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getLeftTriggerAxis,
       operatorController::getLeftY);
 
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
   private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
       driveSubsystem,
       liftSubsystem,
@@ -42,7 +47,6 @@ public class RobotContainer {
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(driveFromController);
     liftSubsystem.setDefaultCommand(liftCommand);
-
     configureButtonBindings();
   }
 
@@ -55,6 +59,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    JoystickTrigger startIntakeTrigger = new JoystickTrigger(driverController, 3);
+        startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis));
+        
   }
 
   /**
