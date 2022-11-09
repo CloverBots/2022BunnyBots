@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
@@ -35,19 +36,15 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private static final double DRIVEROTATE_PID_I = 0.00;
   private static final double DRIVEROTATE_PID_D = 0.0;
 
-
-
   public final PIDController driveStraightPidController = new PIDController(
-    DRIVESTRAIGHT_PID_P,
-    DRIVESTRAIGHT_PID_I,
-    DRIVESTRAIGHT_PID_D);
+     DRIVESTRAIGHT_PID_P,
+     DRIVESTRAIGHT_PID_I,
+     DRIVESTRAIGHT_PID_D);
 
-public final PIDController driveRotatePidController = new PIDController(
-    DRIVEROTATE_PID_P,
-    DRIVEROTATE_PID_I,
-    DRIVEROTATE_PID_D);
-
-
+  public final PIDController driveRotatePidController = new PIDController(
+      DRIVEROTATE_PID_P,
+     DRIVEROTATE_PID_I,
+     DRIVEROTATE_PID_D);
 
   public final NavXGyro navXGyro = new NavXGyro();
 
@@ -61,7 +58,7 @@ public final PIDController driveRotatePidController = new PIDController(
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("heading", navXGyro.getHeading());
   }
 
   public void arcadeDrive(double forward, double rotate) {
