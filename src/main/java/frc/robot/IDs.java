@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C.Port;
+
 public final class IDs {
     //ControllerPorts
     public static final int CONTROLLER_DRIVE_PORT = 0;
@@ -19,5 +21,8 @@ public final class IDs {
     public static final int LIFT_LOWER_SWITCH = 7;
     public static final int LIFT_WINCH_DEVICE0 = 8;
     public static final int LIFT_WINCH_DEVICE1 = 9;
+
+    //NavX Gyro
+    public static final Port AHRS_PORT_ID = Port.kMXP;
     
 }
