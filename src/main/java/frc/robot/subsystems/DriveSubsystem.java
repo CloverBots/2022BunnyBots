@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
@@ -13,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.RobotLifecycleCallbacks;
 
 import frc.robot.IDs;
+import frc.robot.NavXGyro;
 
 public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
   public static final double WHEEL_DIAMETER_METERS = 0.1524;
@@ -24,6 +26,30 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private final CANSparkMax rightLeadMotor = new CANSparkMax(IDs.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
   private final CANSparkMax leftFollowMotor = new CANSparkMax(IDs.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);
   private final CANSparkMax rightFollowMotor = new CANSparkMax(IDs.DRIVE_RIGHT_FOLLOW_DEVICE, MotorType.kBrushless);
+
+  private static final double DRIVESTRAIGHT_PID_P = 0.8;
+  private static final double DRIVESTRAIGHT_PID_I = 0.0;
+  private static final double DRIVESTRAIGHT_PID_D = 0.06;
+
+  private static final double DRIVEROTATE_PID_P = 0.0005;
+  private static final double DRIVEROTATE_PID_I = 0.00;
+  private static final double DRIVEROTATE_PID_D = 0.0;
+
+
+
+  public final PIDController driveStraightPidController = new PIDController(
+    DRIVESTRAIGHT_PID_P,
+    DRIVESTRAIGHT_PID_I,
+    DRIVESTRAIGHT_PID_D);
+
+public final PIDController driveRotatePidController = new PIDController(
+    DRIVEROTATE_PID_P,
+    DRIVEROTATE_PID_I,
+    DRIVEROTATE_PID_D);
+
+
+
+  public final NavXGyro navXGyro = new NavXGyro();
 
   public DriveSubsystem() {
     leftFollowMotor.follow(leftLeadMotor);
