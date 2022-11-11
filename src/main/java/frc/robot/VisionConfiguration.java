@@ -1,5 +1,7 @@
 package frc.robot;
 
+// http://10.36.74.11:5801 for LimeLight web page
+
 public class VisionConfiguration {
   private final double targetHeight;
   private final double cameraHeight;
