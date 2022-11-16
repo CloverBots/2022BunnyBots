@@ -12,8 +12,10 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.LiftCommand;
+import frc.robot.commands.LimeLightTestCommand;
 import frc.robot.subsystems.LiftSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -25,6 +27,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
+  private static final double CAMERA_HEIGHT = 43.7; // on test robot
+  private static final double CAMERA_PITCH = 22.0;
+
+  private final VisionConfiguration visionConfiguration = new VisionConfiguration(
+      VISION_TARGET_HEIGHT,
+      CAMERA_HEIGHT,
+      CAMERA_PITCH);
+
+  private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
+
   private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
   private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
 
@@ -60,9 +73,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    JoystickTrigger startIntakeTrigger = new JoystickTrigger(driverController, 3);
-        startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis));
-        
+    JoystickTrigger startIntakeTrigger = new JoystickTrigger(driverController, XboxController.Axis.kRightTrigger.value);
+    startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis));
+
+    JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
+    limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
+
   }
 
   /**

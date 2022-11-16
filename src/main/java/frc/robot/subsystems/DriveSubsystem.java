@@ -28,6 +28,11 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private final CANSparkMax leftFollowMotor = new CANSparkMax(IDs.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);
   private final CANSparkMax rightFollowMotor = new CANSparkMax(IDs.DRIVE_RIGHT_FOLLOW_DEVICE, MotorType.kBrushless);
 
+  private static final double LIME_PID_P = 0.02;
+  private static final double LIME_PID_I = 0.0;
+  private static final double LIME_PID_D = 0.0;
+  private static final double LIME_PID_DEFAULT_SETPOINT = 0;
+
   private static final double DRIVESTRAIGHT_PID_P = 0.8;
   private static final double DRIVESTRAIGHT_PID_I = 0.0;
   private static final double DRIVESTRAIGHT_PID_D = 0.06;
@@ -36,15 +41,20 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private static final double DRIVEROTATE_PID_I = 0.00;
   private static final double DRIVEROTATE_PID_D = 0.0;
 
+  private final PIDController limePidController = new PIDController(
+      LIME_PID_P,
+      LIME_PID_I,
+      LIME_PID_D);
+
   public final PIDController driveStraightPidController = new PIDController(
-     DRIVESTRAIGHT_PID_P,
-     DRIVESTRAIGHT_PID_I,
-     DRIVESTRAIGHT_PID_D);
+      DRIVESTRAIGHT_PID_P,
+      DRIVESTRAIGHT_PID_I,
+      DRIVESTRAIGHT_PID_D);
 
   public final PIDController driveRotatePidController = new PIDController(
       DRIVEROTATE_PID_P,
-     DRIVEROTATE_PID_I,
-     DRIVEROTATE_PID_D);
+      DRIVEROTATE_PID_I,
+      DRIVEROTATE_PID_D);
 
   public final NavXGyro navXGyro = new NavXGyro();
 
@@ -54,6 +64,8 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
     rightLeadMotor.setInverted(false);
     rightFollowMotor.setInverted(false);
+
+    limePidController.setSetpoint(LIME_PID_DEFAULT_SETPOINT);
   }
 
   @Override
@@ -97,6 +109,10 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   // Get the average position of left and right encoders.
   public double getAverageEncoderPosition() {
     return (getLeftEncoderPosition() + getRightEncoderPosition()) / 2;
+  }
+
+  public double calculateLimePIDOutput(double measurement) {
+    return limePidController.calculate(measurement);
   }
 
   public void resetEncoders() {
