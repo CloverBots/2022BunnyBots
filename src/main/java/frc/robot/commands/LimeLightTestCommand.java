@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.VisionTargetTracker;
+import frc.robot.VisionTargetTracker.LedMode;
 
 public class LimeLightTestCommand extends CommandBase {
   private final VisionTargetTracker visionTargetTracker;
@@ -20,6 +21,8 @@ public class LimeLightTestCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    visionTargetTracker.setLedMode(LedMode.FORCE_ON);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,13 +34,14 @@ public class LimeLightTestCommand extends CommandBase {
 
     SmartDashboard.putBoolean("TargetValid", isTargetValid);
     SmartDashboard.putNumber("TargetDistance", targetDistance);
-    System.out.println("TargetValue "+isTargetValid);
-    System.out.println("TargetValue "+targetDistance);
+    System.out.println("TargetValue " + isTargetValid);
+    System.out.println("TargetValue " + targetDistance);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    visionTargetTracker.setLedMode(LedMode.FORCE_OFF);
   }
 
   // Returns true when the command should end.
