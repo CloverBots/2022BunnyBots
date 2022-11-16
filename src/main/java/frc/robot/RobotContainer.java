@@ -15,6 +15,7 @@ import frc.robot.commands.LiftCommand;
 import frc.robot.commands.LimeLightTestCommand;
 import frc.robot.subsystems.LiftSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -75,8 +76,8 @@ public class RobotContainer {
     JoystickTrigger startIntakeTrigger = new JoystickTrigger(driverController, 3); // button X
     startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis));
 
-    JoystickTrigger limeLightTestTrigger = new JoystickTrigger(operatorController, 1); // button A
-    limeLightTestTrigger.whileHeld(new LimeLightTestCommand(visionTargetTracker));
+    JoystickButton limeLightTestButton = new JoystickButton(operatorController, 1); // button A
+    limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
 
   }
 
