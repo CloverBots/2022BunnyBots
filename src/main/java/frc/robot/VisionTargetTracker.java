@@ -111,11 +111,7 @@ public class VisionTargetTracker {
    * Get whether there is a valid target visible
    */
   public boolean isValid() {
-    if (tv.getNumber(0).intValue() == 0) {
-      return false;
-    }
-
-    return true;
+    return tv.getNumber(0).intValue() != 0;
   }
 
   /**
