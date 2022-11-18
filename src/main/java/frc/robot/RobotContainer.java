@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
   private static final double CAMERA_HEIGHT = 43.7; // on test robot
-  private static final double CAMERA_PITCH = 22.0;
+  private static final double CAMERA_PITCH = 0;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
