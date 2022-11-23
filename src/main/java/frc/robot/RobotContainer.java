@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -57,10 +59,13 @@ public class RobotContainer {
       driverController::getRightX,
       driverController::getLeftTriggerAxis);
 
+  private final SendableChooser<Command> chooser = new SendableChooser<>();
+
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(driveFromController);
     liftSubsystem.setDefaultCommand(liftCommand);
     configureButtonBindings();
+    configureChooserModes();
   }
 
   /**
@@ -79,6 +84,12 @@ public class RobotContainer {
     JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
 
+  }
+
+  private void configureChooserModes() {
+
+    SmartDashboard.putData("Autonomous Mode", chooser);
+    SmartDashboard.putNumber("Auto wait time", 0);
   }
 
   /**
