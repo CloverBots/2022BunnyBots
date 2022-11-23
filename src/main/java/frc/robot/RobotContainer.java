@@ -93,6 +93,8 @@ public class RobotContainer {
 
     SmartDashboard.putData("Autonomous Mode", chooser);
     SmartDashboard.putNumber("Auto wait time", 0);
+
+    chooser.addOption("test", driveToLime);
   }
 
   /**
@@ -101,6 +103,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return chooser.getSelected();
   }
 }
