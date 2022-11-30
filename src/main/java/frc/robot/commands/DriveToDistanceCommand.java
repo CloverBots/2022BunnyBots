@@ -39,10 +39,10 @@ public class DriveToDistanceCommand extends CommandBase {
         driveSubsystem.resetEncoders();
         driveSubsystem.navXGyro.reset();
         //drives in reverse, so reverse distance to move forward
-        driveSubsystem.driveStraightPidController.setSetpoint(-distance); 
+        driveSubsystem.driveDistancePidController.setSetpoint(-distance); 
         driveSubsystem.driveRotatePidController.setSetpoint(rotate+driveSubsystem.navXGyro.getHeading());
         // setting tolerance
-        driveSubsystem.driveStraightPidController.setTolerance(tolerance);
+        driveSubsystem.driveDistancePidController.setTolerance(tolerance);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +55,7 @@ public class DriveToDistanceCommand extends CommandBase {
         SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
         double rotateSpeed = driveSubsystem.driveRotatePidController.calculate(driveSubsystem.navXGyro.getHeading());
         // double rotateSpeed = 0;
-        double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
+        double drivingSpeed = driveSubsystem.driveDistancePidController.calculate(distanceTraveled);
         drivingSpeed = Math.max(Math.min(drivingSpeed, maxSpeed), -maxSpeed);
 
         //SmartDashboard.putNumber("Rotate Speed", rotateSpeed);
@@ -75,6 +75,6 @@ public class DriveToDistanceCommand extends CommandBase {
     public boolean isFinished() {
         // end the command when the difference between the desired distance and the
         // actual distance is within a certain threshold calculated by the PID controller
-        return driveSubsystem.driveStraightPidController.atSetpoint();
+        return driveSubsystem.driveDistancePidController.atSetpoint();
     }
 }

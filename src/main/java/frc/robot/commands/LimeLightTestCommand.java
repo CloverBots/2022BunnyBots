@@ -34,7 +34,8 @@ public class LimeLightTestCommand extends CommandBase {
 
     SmartDashboard.putBoolean("TargetValid", isTargetValid);
     SmartDashboard.putNumber("TargetDistance", targetDistance);
-    
+    SmartDashboard.putNumber("x", visionTargetTracker.getX());
+    SmartDashboard.putNumber("y", visionTargetTracker.getY());
   }
 
   // Called once the command ends or is interrupted. 

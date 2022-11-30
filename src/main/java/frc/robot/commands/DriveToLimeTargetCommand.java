@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.VisionTargetTracker;
 import frc.robot.VisionTargetTracker.LedMode;
@@ -10,26 +11,36 @@ public class DriveToLimeTargetCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
     private final VisionTargetTracker tracker;
-    private static final double MAX_OUTPUT = .2;
     private final double distanceRequired;
-    public DriveToLimeTargetCommand(DriveSubsystem driveSubsystem, VisionTargetTracker tracker, double distanceRequired) {
+    private final double tolerance;
+    private final double maxSpeed;
+
+    public DriveToLimeTargetCommand(DriveSubsystem driveSubsystem, VisionTargetTracker tracker, double distanceRequired, double tolerance, double maxSpeed) {
         this.driveSubsystem = driveSubsystem;
         this.tracker = tracker;
         this.distanceRequired = distanceRequired;
+        this.tolerance = tolerance;
+        this.maxSpeed = maxSpeed;
         addRequirements(driveSubsystem);
     }
 
     @Override
     public void initialize() {
         tracker.setLedMode(LedMode.FORCE_ON);
+        driveSubsystem.limeDistancePidController.setSetpoint(distanceRequired);
+        driveSubsystem.limeDistancePidController.setTolerance(tolerance);
+        driveSubsystem.limeRotationPidController.setSetpoint(tracker.getX());
     }
 
     @Override
     public void execute() {
         double xOffset = tracker.getX();
-        double rotation = Math.min(MAX_OUTPUT, Math.max(-MAX_OUTPUT, driveSubsystem.calculateLimePIDOutput(xOffset)));
-        //double distance = Math.max(0, tracker.computeTargetDistance() - distanceRequired);
-        driveSubsystem.autoDrive(0, rotation);
+        double rotation = Math.min(maxSpeed, Math.max(-maxSpeed, driveSubsystem.calculateLimeRotatePidOutput(xOffset)));
+        double distance = Math.min(maxSpeed, Math.max(0, tracker.computeTargetDistance() - distanceRequired));
+        driveSubsystem.autoDrive(distance, rotation);
+        
+        SmartDashboard.putNumber("rotation", rotation);
+        SmartDashboard.putNumber("distance", tracker.computeTargetDistance());
     }
 
     
@@ -37,10 +48,11 @@ public class DriveToLimeTargetCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         tracker.setLedMode(LedMode.FORCE_OFF);
+        driveSubsystem.autoDrive(0, 0);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return driveSubsystem.limeDistancePidController.atSetpoint();
     }
 }
