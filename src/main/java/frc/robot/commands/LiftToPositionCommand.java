@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LiftSubsystem;
 
@@ -28,16 +26,16 @@ public class LiftToPositionCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    direction = 1;
+    if (liftSubsystem.getLiftEncoderPosition() < position) {
+      direction = -1;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    direction = 1;
-    if (liftSubsystem.getLiftEncoderPosition() > position) {
-      direction = -1;
-    }
+    System.out.println("Lpos: "+liftSubsystem.getLiftEncoderPosition());
 
     liftSubsystem.setLiftSpeed(LIFT_SPEED * direction);
   }

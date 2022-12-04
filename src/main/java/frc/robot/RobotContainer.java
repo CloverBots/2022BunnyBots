@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.LiftCommand;
 import frc.robot.commands.LimeLightTestCommand;
 import frc.robot.subsystems.LiftSubsystem;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -29,9 +29,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
-  private static final double CAMERA_HEIGHT = 43.7; // on test robot
-  private static final double CAMERA_PITCH = 22.0;
+  private static final double VISION_TARGET_HEIGHT = 36; // inches
+  private static final double CAMERA_HEIGHT = 0; 
+  private static final double CAMERA_PITCH = 60; //degrees
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
@@ -60,6 +60,8 @@ public class RobotContainer {
       driverController::getLeftTriggerAxis);
 
   private final SendableChooser<Command> chooser = new SendableChooser<>();
+
+  private final AutoCommand autoCommand = new AutoCommand(driveSubsystem, intakeSubsystem, liftSubsystem, visionTargetTracker);
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(driveFromController);
@@ -90,6 +92,9 @@ public class RobotContainer {
 
     SmartDashboard.putData("Autonomous Mode", chooser);
     SmartDashboard.putNumber("Auto wait time", 0);
+
+    chooser.addOption("Autonomous", autoCommand);
+    chooser.setDefaultOption("Autonomous", autoCommand);
   }
 
   /**
@@ -98,6 +103,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    System.out.println("aaaadasfasdfegyh");
+    return chooser.getSelected();
   }
 }
