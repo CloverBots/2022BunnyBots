@@ -71,8 +71,8 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     leftFollowMotor.follow(leftLeadMotor);
     rightFollowMotor.follow(rightLeadMotor);
 
-    rightLeadMotor.setInverted(false);
-    rightFollowMotor.setInverted(false);
+    rightLeadMotor.setInverted(true);
+    rightFollowMotor.setInverted(true);
 
     limeRotationPidController.setSetpoint(LIME_ROTATE_PID_DEFAULT_SETPOINT);
   }

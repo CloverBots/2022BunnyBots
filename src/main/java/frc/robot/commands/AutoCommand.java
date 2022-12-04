@@ -34,13 +34,13 @@ public class AutoCommand extends SequentialCommandGroupExtended {
     //10.0 distance from target to stop at, 0.2 tolerance, 0.5 max power
     //addCommands(new DriveToLimeTargetCommand(driveSubsystem, visionTargetTracker, 10.0, 0.2, 0.5));
 
-    addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_UP_POSITION));
+    //addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_UP_POSITION));
 
-    //addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
+    addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
-    //addCommands(new WaitCommand(INTAKE_RUN_TIME));
+    addCommands(new WaitCommand(INTAKE_RUN_TIME));
 
-    //addInstant(() -> intakeSubsystem.stop());
+    addInstant(() -> intakeSubsystem.stop());
 
     //addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_DOWN_POSITION));
     
