@@ -13,7 +13,6 @@ public class IntakeSubsystem extends SubsystemBase {
     private double speed;
 
     public IntakeSubsystem() {
-        intakeMotor.setInverted(true);
     }
 
     @Override
