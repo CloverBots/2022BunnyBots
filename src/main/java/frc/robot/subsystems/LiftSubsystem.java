@@ -14,7 +14,7 @@ import frc.robot.IDs;
 import frc.robot.LiftPosition;
 
 public class LiftSubsystem extends SubsystemBase implements LiftObserver {
-  private final int CURRENT_LIMIT = 1; 
+  private final int CURRENT_LIMIT = 20; 
 
   private final CANSparkMax winch0 = new CANSparkMax(IDs.LIFT_WINCH_DEVICE0, MotorType.kBrushless);
   private final CANSparkMax winch1 = new CANSparkMax(IDs.LIFT_WINCH_DEVICE1, MotorType.kBrushless);

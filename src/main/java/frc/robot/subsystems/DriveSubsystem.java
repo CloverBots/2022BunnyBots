@@ -19,7 +19,7 @@ import frc.robot.NavXGyro;
 
 public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
   public static final double WHEEL_DIAMETER_METERS = 0.1524;
-  public static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
+  public static final double ENCODER_POSITION_CONVERSION_FACTOR = WHEEL_DIAMETER_METERS * Math.PI; // removing *0.1
   public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
   public static final double ENCODER_TICKS_PER_ROTATION = 2048;
 
@@ -32,7 +32,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private static final double LIME_DISTANCE_PID_I = 0.0;
   private static final double LIME_DISTANCE_PID_D = 0.0;
 
-  private static final double LIME_ROTATE_PID_P = 0.02;
+  private static final double LIME_ROTATE_PID_P = 0.01;
   private static final double LIME_ROTATE_PID_I = 0.0;
   private static final double LIME_ROTATE_PID_D = 0.0;
   private static final double LIME_ROTATE_PID_DEFAULT_SETPOINT = 0;
@@ -146,10 +146,13 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
   @Override
   public void teleopInit() {
-    setOpenLoopRamp(0.1); // .1 is how much time it takes to get desired value, values of 0.5+ make it
+    setOpenLoopRamp(0.3); // .1 is how much time it takes to get desired value, values of 0.5+ make it
                           // really drifty
     // Re-enable safety for teleop
     // differentialDrive.setSafetyEnabled(true);
+
+
+
   }
 
   @Override

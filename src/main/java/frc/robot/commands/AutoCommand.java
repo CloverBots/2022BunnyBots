@@ -9,8 +9,8 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.commands.LiftToPositionCommand;
 
 public class AutoCommand extends SequentialCommandGroupExtended {
-  private final static double DRIVE_SPEED = 0.5;
-  private final static double DRIVE_DISTANCE = -2;
+  private final static double DRIVE_SPEED = 0.1;
+  private final static double DRIVE_DISTANCE = 64;
   private final static double DRIVE_ROTATE = 0;
   private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime";
   private final static int LIFT_UP_POSITION = -400;
@@ -29,21 +29,21 @@ public class AutoCommand extends SequentialCommandGroupExtended {
     // Autonomous commands in running order
     //addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
 
-    //addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
+    addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
 
     //10.0 distance from target to stop at, 0.2 tolerance, 0.5 max power
-    //addCommands(new DriveToLimeTargetCommand(driveSubsystem, visionTargetTracker, 10.0, 0.2, 0.5));
+    //addCommands(new DriveToLimeTargetCommand(driveSubsystem, visionTargetTracker, 82, 0.2, 0.1));
 
     //addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_UP_POSITION));
 
-    addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
+    //addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
-    addCommands(new WaitCommand(INTAKE_RUN_TIME));
+    //addCommands(new WaitCommand(INTAKE_RUN_TIME));
 
-    addInstant(() -> intakeSubsystem.stop());
+    //addInstant(() -> intakeSubsystem.stop());
 
     //addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_DOWN_POSITION));
     
-    //addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
+    addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
   }
 }

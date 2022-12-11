@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.VisionTargetTracker.LedMode;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -29,9 +30,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private static final double VISION_TARGET_HEIGHT = 36; // inches
-  private static final double CAMERA_HEIGHT = 0; 
-  private static final double CAMERA_PITCH = 60; //degrees
+  private static final double VISION_TARGET_HEIGHT = 34; // inches
+  private static final double CAMERA_HEIGHT = 21.25; 
+  private static final double CAMERA_PITCH = 0; //degrees
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
@@ -68,6 +69,8 @@ public class RobotContainer {
     liftSubsystem.setDefaultCommand(liftCommand);
     configureButtonBindings();
     configureChooserModes();
+    
+    visionTargetTracker.setLedMode(LedMode.FORCE_ON);
   }
 
   /**

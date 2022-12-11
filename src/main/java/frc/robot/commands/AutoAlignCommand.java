@@ -28,7 +28,6 @@ public class AutoAlignCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("a2");
         visionTargetTracker.setLedMode(LedMode.FORCE_ON);
         timer.reset();
         timer.start();

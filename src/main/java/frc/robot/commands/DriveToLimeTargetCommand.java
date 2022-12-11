@@ -36,10 +36,11 @@ public class DriveToLimeTargetCommand extends CommandBase {
     public void execute() {
         double xOffset = tracker.getX();
         double rotation = Math.min(maxSpeed, Math.max(-maxSpeed, driveSubsystem.calculateLimeRotatePidOutput(xOffset)));
-        double distance = Math.min(maxSpeed, Math.max(0, tracker.computeTargetDistance() - distanceRequired));
-        driveSubsystem.autoDrive(distance, rotation);
+        double forward = Math.min(maxSpeed, Math.max(0, tracker.computeTargetDistance() - distanceRequired));
+        driveSubsystem.autoDrive(-forward, rotation);
         
         SmartDashboard.putNumber("rotation", rotation);
+        SmartDashboard.putNumber("forward", forward);
         SmartDashboard.putNumber("distance", tracker.computeTargetDistance());
     }
 
