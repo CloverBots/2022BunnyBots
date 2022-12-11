@@ -18,11 +18,10 @@ import frc.robot.IDs;
 import frc.robot.NavXGyro;
 
 public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
-  public static final double WHEEL_DIAMETER_METERS = 0.1524;
-  public static final double ENCODER_POSITION_CONVERSION_FACTOR = WHEEL_DIAMETER_METERS * Math.PI; // removing *0.1
-  public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
-  public static final double ENCODER_TICKS_PER_ROTATION = 2048;
-
+  public static final double WHEEL_DIAMETER_METERS = 0.1524; // = 6 inches
+  public static final double ENCODER_METERS_PER_ROTATION = WHEEL_DIAMETER_METERS * Math.PI; 
+  public static final double ENCODER_TICKS_PER_ROTATION = 8; // Determined by running robot and counting wheel rotations
+  
   private final CANSparkMax leftLeadMotor = new CANSparkMax(IDs.DRIVE_LEFT_LEAD_DEVICE, MotorType.kBrushless);
   private final CANSparkMax rightLeadMotor = new CANSparkMax(IDs.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
   private final CANSparkMax leftFollowMotor = new CANSparkMax(IDs.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);
@@ -85,6 +84,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   public void arcadeDrive(double forward, double rotate) {
     leftLeadMotor.set(forward + rotate);
     rightLeadMotor.set(forward - rotate);
+    SmartDashboard.putNumber("encoderTicks", leftLeadMotor.getEncoder().getPosition());
   }
 
   // differentialDrive requires constant updates, so we are manually setting the
@@ -106,20 +106,20 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   // Get the current position of the left encoder.
   // Currently used to get the left encoder for driving by distance, but may be
   // changed to include right
-  public double getLeftEncoderPosition() {
-    return leftLeadMotor.getEncoder().getPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
+  public double getLeftEncoderDistance() {
+    return leftLeadMotor.getEncoder().getPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_METERS_PER_ROTATION;
   }
 
   // Get the current position of the right encoder.
   // Currently used to get the left encoder for driving by distance, but may be
   // changed to include right
-  public double getRightEncoderPosition() {
-    return rightLeadMotor.getEncoder().getPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
+  public double getRightEncoderDistance() {
+    return rightLeadMotor.getEncoder().getPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_METERS_PER_ROTATION;
   }
 
   // Get the average position of left and right encoders.
-  public double getAverageEncoderPosition() {
-    return (getLeftEncoderPosition() + getRightEncoderPosition()) / 2;
+  public double getAverageEncoderDistance() {
+    return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
   }
 
   public double calculateLimeRotatePidOutput(double measurement) {
