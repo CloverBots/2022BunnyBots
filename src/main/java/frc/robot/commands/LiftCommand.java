@@ -14,7 +14,7 @@ public class LiftCommand extends CommandBase {
   private final LiftSubsystem liftSubsystem;
   private final DoubleSupplier trigger;
   private final DoubleSupplier leftJoystickY;
-  private final double UPPER_ENDPOINT = 87;  //in rotations
+  public static final double UPPER_ENDPOINT = 87;  //in rotations
   private final double LOWER_ENDPOINT = 0.0;
   private final double APPROACH_MAX_SPEED = 0.2;
 
@@ -38,8 +38,7 @@ public class LiftCommand extends CommandBase {
   @Override
   public void execute() {
 
-    SmartDashboard.putNumber("elevator height",
-    liftSubsystem.getLiftEncoderPosition());
+    SmartDashboard.putNumber("elevator height", liftSubsystem.getLiftEncoderPosition());
 
     if (trigger.getAsDouble() > .5) {
       double liftSpeed = leftJoystickY.getAsDouble();

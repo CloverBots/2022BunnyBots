@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SequentialCommandGroupExtended;
 import frc.robot.VisionTargetTracker;
@@ -13,10 +14,10 @@ public class AutoCommand extends SequentialCommandGroupExtended {
   private final static double DRIVE_DISTANCE = 1;
   private final static double DRIVE_ROTATE = 0;
   private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime";
-  private final static int LIFT_UP_POSITION = -400;
+  private final static int LIFT_UP_POSITION = (int) LiftCommand.UPPER_ENDPOINT;
   private final static int LIFT_DOWN_POSITION = 0;
   private final static double INTAKE_SPEED = .5;
-  private final static double INTAKE_RUN_TIME = 2;
+  private final static double INTAKE_RUN_TIME = 0.5;
   private final static double AUTO_ALIGN_TIMEOUT_SECONDS = 3;
 
   /** Creates a new AutonomousLM. */
@@ -26,15 +27,15 @@ public class AutoCommand extends SequentialCommandGroupExtended {
       LiftSubsystem liftSubsystem,
       VisionTargetTracker visionTargetTracker) {
 
+    // Get distance to drive from SmartDashboard: (entered in inches, converted to meters)
+    //double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", 0) / 39.37 ), 10);
+
     // Autonomous commands in running order
     //addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
 
     //addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
 
-    //10.0 distance from target to stop at, 0.2 tolerance, 0.5 max power
-    //addCommands(new DriveToLimeTargetCommand(driveSubsystem, visionTargetTracker, 82, 0.2, 0.1));
-
-    //addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_UP_POSITION));
+    //addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
 
     //addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
@@ -42,8 +43,15 @@ public class AutoCommand extends SequentialCommandGroupExtended {
 
     //addInstant(() -> intakeSubsystem.stop());
 
-    //addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_DOWN_POSITION));
+    addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_UP_POSITION));
+
+    //addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
+
+    addCommands(new WaitCommand(INTAKE_RUN_TIME * 2));
+
+    //addInstant(() -> intakeSubsystem.stop());
+
+    addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_DOWN_POSITION));
     
-    addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
   }
 }
