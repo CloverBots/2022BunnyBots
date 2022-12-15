@@ -14,9 +14,9 @@ public class AutoCommand extends SequentialCommandGroupExtended {
   private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime";
   private final static int LIFT_UP_POSITION = (int) LiftCommand.UPPER_ENDPOINT;
   private final static int LIFT_DOWN_POSITION = 0;
-  private final static double INTAKE_SPEED = .5;
-  private final static double INTAKE_RUN_TIME = 0.5;
-  private final static double AUTO_ALIGN_TIMEOUT_SECONDS = 3;
+  private final static double INTAKE_SPEED = -.5;
+  private final static double INTAKE_RUN_TIME = 0.25;
+  private final static double AUTO_ALIGN_TIMEOUT_SECONDS = 1;
 
   /** Creates a new AutonomousLM. */
   public AutoCommand(
@@ -25,17 +25,23 @@ public class AutoCommand extends SequentialCommandGroupExtended {
       LiftSubsystem liftSubsystem,
       VisionTargetTracker visionTargetTracker) {
 
-    // Get distance to drive from SmartDashboard: (entered in inches, converted to meters)
-    double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", 0) / 39.37 ), 10);
-
+    // Get distance to drive from SmartDashboard: (entered in inches, converted to
+    // meters)
+    double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", 0) / 39.37), 10);
+    
     // Autonomous commands in running order
-    addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
-
+    // addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
+    
+    if (distanceInMeters > 0) {
+      addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters/2, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
+    }
     addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
 
     if (distanceInMeters > 0) {
-      addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
+      addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters/2, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
     }
+
+    addCommands(new LiftToPositionCommand(liftSubsystem, 10));
 
     addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
@@ -52,6 +58,6 @@ public class AutoCommand extends SequentialCommandGroupExtended {
     addInstant(() -> intakeSubsystem.stop());
 
     addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_DOWN_POSITION));
-    
+
   }
 }

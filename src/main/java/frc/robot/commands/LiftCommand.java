@@ -41,7 +41,7 @@ public class LiftCommand extends CommandBase {
     SmartDashboard.putNumber("elevator height", liftSubsystem.getLiftEncoderPosition());
 
     if (trigger.getAsDouble() > .5) {
-      double liftSpeed = leftJoystickY.getAsDouble();
+      double liftSpeed = leftJoystickY.getAsDouble() * .5;
 
       if ((liftSubsystem.getLiftEncoderPosition() <= LOWER_ENDPOINT && liftSpeed > 0) ||
           (liftSubsystem.getLiftEncoderPosition() >= UPPER_ENDPOINT && liftSpeed < 0)) {

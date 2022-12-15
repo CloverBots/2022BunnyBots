@@ -86,8 +86,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, XboxController.Axis.kRightTrigger.value);
-    startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getRightTriggerAxis, operatorController::getYButton));
-
+    startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getRightTriggerAxis));
+    JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+    reverseIntakeButton.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getYButton));
     //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
 

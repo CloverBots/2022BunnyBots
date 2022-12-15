@@ -9,19 +9,27 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeCommand extends CommandBase {
 
     private final IntakeSubsystem intakeSubsystem;
-    private final DoubleSupplier intakeSpeed;
-    private final BooleanSupplier reversed;
-
-    public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier intakeSpeed, BooleanSupplier reversed) {
+    private DoubleSupplier intakeSpeed;
+    private BooleanSupplier reversed;
+    
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier intakeSpeed) {
         this.intakeSubsystem = intakeSubsystem;
         this.intakeSpeed = intakeSpeed;
+        addRequirements(intakeSubsystem);
+    }
+
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, BooleanSupplier reversed) {
+        this.intakeSubsystem = intakeSubsystem;
         this.reversed = reversed;
         addRequirements(intakeSubsystem);
     }
-    
+
     @Override
     public void execute() {
-        intakeSubsystem.startIntake(reversed.getAsBoolean() ? -1 : intakeSpeed.getAsDouble());
+        if (reversed != null && reversed.getAsBoolean())
+        intakeSubsystem.startIntake(-1);
+        else if (intakeSpeed != null)
+        intakeSubsystem.startIntake(intakeSpeed.getAsDouble());
     }
 
     @Override
