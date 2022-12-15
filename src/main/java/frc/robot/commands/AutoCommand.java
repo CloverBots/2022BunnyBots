@@ -10,7 +10,7 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.commands.LiftToPositionCommand;
 
 public class AutoCommand extends SequentialCommandGroupExtended {
-  private final static double DRIVE_SPEED = 0.2;
+  private final static double DRIVE_SPEED = 0.3;
   private final static double DRIVE_DISTANCE = 1;
   private final static double DRIVE_ROTATE = 0;
   private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime";
@@ -28,28 +28,28 @@ public class AutoCommand extends SequentialCommandGroupExtended {
       VisionTargetTracker visionTargetTracker) {
 
     // Get distance to drive from SmartDashboard: (entered in inches, converted to meters)
-    //double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", 0) / 39.37 ), 10);
+    double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", -1) / 39.37 ), 10);
 
     // Autonomous commands in running order
-    //addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
+    addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
 
-    //addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
+    addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
 
-    //addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
+    addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
 
-    //addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
+    addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
-    //addCommands(new WaitCommand(INTAKE_RUN_TIME));
+    addCommands(new WaitCommand(INTAKE_RUN_TIME));
 
-    //addInstant(() -> intakeSubsystem.stop());
+    addInstant(() -> intakeSubsystem.stop());
 
     addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_UP_POSITION));
 
-    //addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
+    addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
     addCommands(new WaitCommand(INTAKE_RUN_TIME * 2));
 
-    //addInstant(() -> intakeSubsystem.stop());
+    addInstant(() -> intakeSubsystem.stop());
 
     addCommands(new LiftToPositionCommand(liftSubsystem, LIFT_DOWN_POSITION));
     
