@@ -7,11 +7,9 @@ import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
-import frc.robot.commands.LiftToPositionCommand;
 
 public class AutoCommand extends SequentialCommandGroupExtended {
   private final static double DRIVE_SPEED = 0.3;
-  private final static double DRIVE_DISTANCE = 1;
   private final static double DRIVE_ROTATE = 0;
   private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime";
   private final static int LIFT_UP_POSITION = (int) LiftCommand.UPPER_ENDPOINT;
@@ -28,14 +26,16 @@ public class AutoCommand extends SequentialCommandGroupExtended {
       VisionTargetTracker visionTargetTracker) {
 
     // Get distance to drive from SmartDashboard: (entered in inches, converted to meters)
-    double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", -1) / 39.37 ), 10);
+    double distanceInMeters = Math.min(Math.abs(SmartDashboard.getNumber("Auto Distance Inches", 0) / 39.37 ), 10);
 
     // Autonomous commands in running order
     addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
 
     addCommands(new AutoAlignCommand(driveSubsystem, visionTargetTracker, AUTO_ALIGN_TIMEOUT_SECONDS));
 
-    addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
+    if (distanceInMeters > 0) {
+      addCommands(new DriveToDistanceCommand(driveSubsystem, distanceInMeters, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
+    }
 
     addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED));
 
