@@ -21,7 +21,7 @@ public class IntakeCommand extends CommandBase {
     
     @Override
     public void execute() {
-        intakeSubsystem.startIntake(intakeSpeed.getAsDouble() * (reversed.getAsBoolean() ? -1 : 1));
+        intakeSubsystem.startIntake(reversed.getAsBoolean() ? -1 : intakeSpeed.getAsDouble());
     }
 
     @Override
