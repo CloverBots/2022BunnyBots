@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.VisionTargetTracker.LedMode;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.AutoCommand2;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -63,6 +64,8 @@ public class RobotContainer {
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem, intakeSubsystem, liftSubsystem, visionTargetTracker);
+  private final AutoCommand2 autoCommand2 = new AutoCommand2(driveSubsystem, intakeSubsystem);
+
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(driveFromController);
@@ -72,7 +75,7 @@ public class RobotContainer {
     
     visionTargetTracker.setLedMode(LedMode.FORCE_ON);
 
-    SmartDashboard.putNumber("Auto Distance Inches", 0);
+    SmartDashboard.putNumber("Auto Distance Inches", 270);
   }
 
   /**
@@ -101,6 +104,7 @@ public class RobotContainer {
 
     chooser.addOption("Autonomous", autoCommand);
     chooser.setDefaultOption("Autonomous", autoCommand);
+    chooser.addOption("Autonomous: Bunny", autoCommand2);
   }
 
   /**
