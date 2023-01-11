@@ -4,19 +4,25 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LiftSubsystem;
 
 public class LiftToPositionCommand extends CommandBase {
   private final LiftSubsystem liftSubsystem;
-  private final double LIFT_SPEED = 0.5;
+  private final double LIFT_SPEED = 0.4;
   private int position;
   private int direction;
 
   /** Creates a new LiftCommand. */
   public LiftToPositionCommand(LiftSubsystem liftSubsystem, int position) {
     this.liftSubsystem = liftSubsystem;
-    // TODO: put safe guards on position values
+
+    //Guard against too large of a position value
+    if (position > LiftCommand.UPPER_ENDPOINT) {
+      position = (int) LiftCommand.UPPER_ENDPOINT;
+    }
+    
     this.position = position;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,17 +32,17 @@ public class LiftToPositionCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    direction = 1;
-    if (liftSubsystem.getLiftEncoderPosition() < position) {
-      direction = -1;
+    direction = -1; // going up
+    if (liftSubsystem.getLiftEncoderPosition() > position) {
+      direction = 1; // going down
     }
+    SmartDashboard.putNumber("Lift starting position: ", liftSubsystem.getLiftEncoderPosition());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Lpos: "+liftSubsystem.getLiftEncoderPosition());
-
+    SmartDashboard.putNumber("Lift position: ", liftSubsystem.getLiftEncoderPosition());
     liftSubsystem.setLiftSpeed(LIFT_SPEED * direction);
   }
 
@@ -49,9 +55,9 @@ public class LiftToPositionCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (direction == 1 && liftSubsystem.getLiftEncoderPosition() < position) {
+    if (direction == 1 && liftSubsystem.getLiftEncoderPosition() <= position) {
       return true;
-    } else if (direction == -1 && liftSubsystem.getLiftEncoderPosition() > position) {
+    } else if (direction == -1 && liftSubsystem.getLiftEncoderPosition() >= position) {
       return true;
     } else {
       return false;

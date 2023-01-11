@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.VisionTargetTracker.LedMode;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.AutoCommand2;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,9 +31,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private static final double VISION_TARGET_HEIGHT = 36; // inches
-  private static final double CAMERA_HEIGHT = 0; 
-  private static final double CAMERA_PITCH = 60; //degrees
+  private static final double VISION_TARGET_HEIGHT = 34; // inches
+  private static final double CAMERA_HEIGHT = 21.25; 
+  private static final double CAMERA_PITCH = 0; //degrees
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
@@ -62,12 +64,18 @@ public class RobotContainer {
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem, intakeSubsystem, liftSubsystem, visionTargetTracker);
+  private final AutoCommand2 autoCommand2 = new AutoCommand2(driveSubsystem, intakeSubsystem);
+
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(driveFromController);
     liftSubsystem.setDefaultCommand(liftCommand);
     configureButtonBindings();
     configureChooserModes();
+    
+    visionTargetTracker.setLedMode(LedMode.FORCE_ON);
+
+    SmartDashboard.putNumber("Auto Distance Inches", 270);
   }
 
   /**
@@ -80,11 +88,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    JoystickTrigger startIntakeTrigger = new JoystickTrigger(driverController, XboxController.Axis.kRightTrigger.value);
-    startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis, driverController::getYButton));
-
-    JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
-    limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
+    JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, XboxController.Axis.kRightTrigger.value);
+    startIntakeTrigger.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getRightTriggerAxis));
+    JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+    reverseIntakeButton.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getYButton));
+    //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
+    //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
 
   }
 
@@ -95,6 +104,7 @@ public class RobotContainer {
 
     chooser.addOption("Autonomous", autoCommand);
     chooser.setDefaultOption("Autonomous", autoCommand);
+    chooser.addOption("Autonomous: Bunny", autoCommand2);
   }
 
   /**
@@ -103,7 +113,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    System.out.println("aaaadasfasdfegyh");
     return chooser.getSelected();
   }
 }

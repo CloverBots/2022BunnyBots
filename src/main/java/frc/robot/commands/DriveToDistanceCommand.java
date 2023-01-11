@@ -48,17 +48,14 @@ public class DriveToDistanceCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // Begin the ramp down process when the robot is within 50 centimeters of the
-        // target distance
-        double currentEncoderPosition = driveSubsystem.getAverageEncoderPosition();
-        double distanceTraveled = currentEncoderPosition;
+        double distanceTraveled = driveSubsystem.getAverageEncoderDistance();
         SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
+
         double rotateSpeed = driveSubsystem.driveRotatePidController.calculate(driveSubsystem.navXGyro.getHeading());
-        // double rotateSpeed = 0;
+
         double drivingSpeed = driveSubsystem.driveDistancePidController.calculate(distanceTraveled);
         drivingSpeed = Math.max(Math.min(drivingSpeed, maxSpeed), -maxSpeed);
 
-        //SmartDashboard.putNumber("Rotate Speed", rotateSpeed);
         driveSubsystem.autoDrive(drivingSpeed, -rotateSpeed);
     }
 
