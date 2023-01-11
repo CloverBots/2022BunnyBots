@@ -12,6 +12,7 @@ import frc.robot.VisionTargetTracker.LedMode;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.AutoCommand2;
 import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.DriveToCollision;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -34,6 +35,9 @@ public class RobotContainer {
   private static final double VISION_TARGET_HEIGHT = 34; // inches
   private static final double CAMERA_HEIGHT = 21.25; 
   private static final double CAMERA_PITCH = 0; //degrees
+
+  private static final double speed = 8;
+  private static final double timeoutInSeconds = 5;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
@@ -94,6 +98,8 @@ public class RobotContainer {
     reverseIntakeButton.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getYButton));
     //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
+    JoystickButton driveToCollisionButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+    driveToCollisionButton.whenReleased(new DriveToCollision(driveSubsystem, speed, timeoutInSeconds));
 
   }
 
