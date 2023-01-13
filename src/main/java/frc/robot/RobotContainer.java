@@ -36,8 +36,8 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 21.25; 
   private static final double CAMERA_PITCH = 0; //degrees
 
-  private static final double speed = 8;
-  private static final double timeoutInSeconds = 5;
+  private static final double speed = -.1;
+  private static final double timeoutInSeconds = 3;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,

@@ -13,6 +13,7 @@ public class DriveToCollision extends CommandBase {
   private final double speed;
   private Timer timer = new Timer();
   private final double timeoutInSeconds;
+  private double lastDistance = -1;
 
   /** Creates a new DriveToCollision. */
   public DriveToCollision(DriveSubsystem driveSubsystem, double speed, double timeoutInSeconds) {
@@ -20,7 +21,6 @@ public class DriveToCollision extends CommandBase {
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
     this.timeoutInSeconds = timeoutInSeconds;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -46,7 +46,11 @@ public class DriveToCollision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println(driveSubsystem.getAverageEncoderDistance());
+    if (timer.hasElapsed(1) && Math.abs(lastDistance - driveSubsystem.getAverageEncoderDistance()) < 0.005) {
+      return true;
+    } else {
+      lastDistance = driveSubsystem.getAverageEncoderDistance();
+    }
     return timer.hasElapsed(timeoutInSeconds);
   }
 }
