@@ -12,10 +12,14 @@ public class AutoBalanceCommand extends CommandBase {
     public AutoBalanceCommand(DriveSubsystem drive) {
         driveSubsystem = drive;
         gyro = driveSubsystem.navXGyro;
+        driveSubsystem.balancePidController.setTolerance(3);
+        driveSubsystem.balancePidController.calculate(gyro.getRoll());
     }
     @Override
     public void execute() {
-        System.out.println(gyro.getPitch());
+        System.out.println("gyro: "+gyro.getRoll());
+        System.out.println("pid: "+driveSubsystem.balancePidController.calculate(gyro.getRoll()));
+        
     }
     @Override
     public boolean isFinished() {

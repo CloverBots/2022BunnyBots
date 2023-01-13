@@ -44,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private static final double DRIVE_ROTATE_PID_I = 0.00;
   private static final double DRIVE_ROTATE_PID_D = 0.0;
 
-  private static final double AUTO_BALANCE_PID_P = 0;
+  private static final double AUTO_BALANCE_PID_P = 0.002;
   private static final double AUTO_BALANCE_PID_I = 0;
   private static final double AUTO_BALANCE_PID_D = 0;
 
