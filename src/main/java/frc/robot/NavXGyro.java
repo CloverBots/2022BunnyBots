@@ -13,6 +13,13 @@ public class NavXGyro {
     public double getHeading() {
         return ahrs.getYaw();
     }
+   /**
+    * This HIGHLY depends on the orientation of the RoboRIO!!! 
+    * You may have to use getPitch() instead, depending on its orientation.
+    */
+    public double getRoll() {
+        return ahrs.getRoll();
+    }
 
     public void reset() {
         ahrs.reset();

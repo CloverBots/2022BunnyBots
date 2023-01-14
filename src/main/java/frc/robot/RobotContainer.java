@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.VisionTargetTracker.LedMode;
+import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.AutoCommand2;
 import frc.robot.commands.DriveFromControllerCommand;
@@ -98,9 +99,12 @@ public class RobotContainer {
     reverseIntakeButton.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getYButton));
     //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
+    
+    JoystickButton balance = new JoystickButton(driverController, XboxController.Button.kB.value);
+    balance.whileHeld(new AutoBalanceCommand(driveSubsystem));
+    
     JoystickButton driveToCollisionButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
     driveToCollisionButton.whenReleased(new DriveToCollisionCommand(driveSubsystem, speed, timeoutInSeconds));
-
   }
 
   private void configureChooserModes() {
