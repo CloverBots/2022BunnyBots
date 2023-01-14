@@ -13,6 +13,7 @@ import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.AutoCommand2;
 import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.DriveToCollisionCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -35,6 +36,9 @@ public class RobotContainer {
   private static final double VISION_TARGET_HEIGHT = 34; // inches
   private static final double CAMERA_HEIGHT = 21.25; 
   private static final double CAMERA_PITCH = 0; //degrees
+
+  private static final double speed = -.1;
+  private static final double timeoutInSeconds = 3;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
@@ -95,8 +99,12 @@ public class RobotContainer {
     reverseIntakeButton.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getYButton));
     //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
+    
     JoystickButton balance = new JoystickButton(driverController, XboxController.Button.kB.value);
     balance.whileHeld(new AutoBalanceCommand(driveSubsystem));
+    
+    JoystickButton driveToCollisionButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+    driveToCollisionButton.whenReleased(new DriveToCollisionCommand(driveSubsystem, speed, timeoutInSeconds));
   }
 
   private void configureChooserModes() {
