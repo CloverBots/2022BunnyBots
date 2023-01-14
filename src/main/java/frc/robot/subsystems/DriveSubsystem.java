@@ -44,10 +44,6 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
   private static final double DRIVE_ROTATE_PID_I = 0.00;
   private static final double DRIVE_ROTATE_PID_D = 0.0;
 
-  private static final double AUTO_BALANCE_PID_P = 0.002;
-  private static final double AUTO_BALANCE_PID_I = 0;
-  private static final double AUTO_BALANCE_PID_D = 0;
-
   public final PIDController limeDistancePidController = new PIDController(
       LIME_DISTANCE_PID_P,
       LIME_DISTANCE_PID_I,
@@ -67,11 +63,6 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
       DRIVE_ROTATE_PID_P,
       DRIVE_ROTATE_PID_I,
       DRIVE_ROTATE_PID_D);
-
-  public final PIDController balancePidController = new PIDController(
-    AUTO_BALANCE_PID_P, 
-    AUTO_BALANCE_PID_I, 
-    AUTO_BALANCE_PID_D);
 
   public final NavXGyro navXGyro = new NavXGyro();
 
