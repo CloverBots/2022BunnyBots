@@ -55,11 +55,6 @@ public class AutoBalanceCommand extends CommandBase {
         }
 
         driveSubsystem.autoDrive(drivePower, 0);
-
-        // Debugging Print Statments
-        System.out.println("Current Angle: " + currentAngle);
-        System.out.println("Error " + error);
-        System.out.println("Drive Power: " + drivePower);
     }
 
     // Called once the command ends or is interrupted.
