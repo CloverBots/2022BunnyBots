@@ -46,7 +46,7 @@ public class DriveToCollisionCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.hasElapsed(1) && Math.abs(lastDistance - driveSubsystem.getAverageEncoderDistance()) < 0.005) {
+    if (timer.hasElapsed(.5) && Math.abs(lastDistance - driveSubsystem.getAverageEncoderDistance()) < 0.005) {
       return true;
     } else {
       lastDistance = driveSubsystem.getAverageEncoderDistance();
