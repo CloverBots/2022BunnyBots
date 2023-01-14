@@ -24,5 +24,11 @@ public final class IDs {
 
     //NavX Gyro
     public static final Port AHRS_PORT_ID = Port.kMXP;
+
+    //Beam
+    public static final double BEAM_BALANACED_DRIVE_KP = 0.015; // P (Proportional) constant of a PID loop
+    public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
+    public static final double BEAM_BALANCED_ANGLE_THRESHOLD_DEGREES = 1;
+    public static final double BACKWARDS_BALANCING_EXTRA_POWER_MULTIPLIER = 1.35;
     
 }

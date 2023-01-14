@@ -95,8 +95,8 @@ public class RobotContainer {
     reverseIntakeButton.whileHeld(new IntakeCommand(intakeSubsystem, operatorController::getYButton));
     //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
-    JoystickButton balalce = new JoystickButton(driverController, XboxController.Button.kB.value);
-    balalce.whileHeld(new AutoBalanceCommand(driveSubsystem));
+    JoystickButton balance = new JoystickButton(driverController, XboxController.Button.kB.value);
+    balance.whileHeld(new AutoBalanceCommand(driveSubsystem));
   }
 
   private void configureChooserModes() {
