@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveToCollision extends CommandBase {
+public class DriveToCollisionCommand extends CommandBase {
   private final DriveSubsystem driveSubsystem;
   private final double speed;
   private Timer timer = new Timer();
@@ -16,7 +16,7 @@ public class DriveToCollision extends CommandBase {
   private double lastDistance = -1;
 
   /** Creates a new DriveToCollision. */
-  public DriveToCollision(DriveSubsystem driveSubsystem, double speed, double timeoutInSeconds) {
+  public DriveToCollisionCommand(DriveSubsystem driveSubsystem, double speed, double timeoutInSeconds) {
     this.speed = speed;
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);

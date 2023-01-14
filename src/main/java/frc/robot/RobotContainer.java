@@ -12,7 +12,7 @@ import frc.robot.VisionTargetTracker.LedMode;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.AutoCommand2;
 import frc.robot.commands.DriveFromControllerCommand;
-import frc.robot.commands.DriveToCollision;
+import frc.robot.commands.DriveToCollisionCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -99,7 +99,7 @@ public class RobotContainer {
     //JoystickButton limeLightTestButton = new JoystickButton(operatorController, XboxController.Button.kA.value); 
     //limeLightTestButton.whileHeld(new LimeLightTestCommand(visionTargetTracker));
     JoystickButton driveToCollisionButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
-    driveToCollisionButton.whenReleased(new DriveToCollision(driveSubsystem, speed, timeoutInSeconds));
+    driveToCollisionButton.whenReleased(new DriveToCollisionCommand(driveSubsystem, speed, timeoutInSeconds));
 
   }
 
